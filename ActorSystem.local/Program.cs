@@ -7,36 +7,31 @@ using System.Threading.Tasks;
 using Akka.Actor;
 using Shared.Actors;
 using Shared.Messages;
-    
+
 namespace ActorSystem.local
 {
     class Program
     {
-        public static Akka.Actor.ActorSystem ActorSys { get; private set; }
-        public static IActorRef BridgeActor { get; private set; }
 
         static void Main(string[] args)
         {
-            ActorSys = Akka.Actor.ActorSystem.Create("ExampleActorSystem");
-            BridgeActor = ActorSys.ActorOf(Props.Create<BridgeActor>(), "Bridge");
+            // ActorSys = Akka.Actor.ActorSystem.Create("ExampleActorSystem");
 
+            var system = Akka.Actor.ActorSystem.Create("ExampleActorSystem");
+            
+                var bridgeActor = system.ActorOf(Props.Create<BridgeActor>(), "Bridge");
 
+                while (true)
+                {
 
+                    Thread.Sleep(1000);
+                    Console.Beep();
 
-            while (true)
-            {
-                Console.WriteLine("Press enter to send the message");
-                Console.ReadLine();
-                Console.Beep();
+                    bridgeActor.Tell(new PerformTaskMessage(TimeSpan.FromSeconds(4)));
+                    Console.WriteLine("Heartbeat message sent");
+                }
 
-                // ActorSys.ActorSelection("/user/Bridge/TaskRunner").Tell(new PerformTaskMessage(TimeSpan.FromSeconds(4)));
-
-           
-                BridgeActor.Tell(new PerformTaskMessage(TimeSpan.FromSeconds(4)));
-     
-
-
-            }
+            
 
         }
     }

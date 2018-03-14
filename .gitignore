@@ -3,3 +3,6 @@
 ################################################################################
 
 /packages
+/ActorSystem.Remote/obj/Debug
+/ActorSystem.local/obj/Debug
+/Shared/obj/Debug

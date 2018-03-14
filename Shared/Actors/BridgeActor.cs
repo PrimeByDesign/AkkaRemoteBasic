@@ -7,11 +7,12 @@ namespace Shared.Actors
     public class BridgeActor : ReceiveActor
     {
 
-        private static IActorRef TaskRunnerRef { get; set; }
+
+        private readonly ActorSelection TaskRunnerRef = Context.ActorSelection("akka.tcp://MyServer@localhost:8081/user/TaskRunner");
+
 
         public BridgeActor()
         {
-            TaskRunnerRef = Context.ActorOf(Props.Create<TaskRunnerActor>(), "TaskRunner");
 
             Receive<PerformTaskMessage>(m =>
             {
@@ -20,17 +21,7 @@ namespace Shared.Actors
 
             Console.WriteLine(TaskRunnerRef.Path);
         }
-
-        protected override SupervisorStrategy SupervisorStrategy()
-        {
-            return new OneForOneStrategy(
-                exception =>
-                {
-
-                    return Directive.Restart;
-                }
-            );
-        }
+        
 
         protected override void PreStart()
         {

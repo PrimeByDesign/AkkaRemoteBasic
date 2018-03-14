@@ -14,7 +14,6 @@ namespace Shared.Actors
             Receive<PerformTaskMessage>(x => {
 
                 Console.WriteLine("GOT MESSAGE ");
-
             });
         }
 
